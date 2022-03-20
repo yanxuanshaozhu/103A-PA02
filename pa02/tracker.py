@@ -26,16 +26,16 @@ In place of SQL queries, we will have method calls.
 
 This app will store the data in a SQLite database ~/tracker.db
 
-Note the actual implementation of the ORM is hidden and so it 
+Note the actual implementation of the ORM is hidden and so it
 could be replaced with PostgreSQL or Pandas or straight python lists
 
 '''
 
-#from transactions import Transaction
+from transactions import Transaction
 from category import Category
 import sys
 
-#transactions = Transaction('tracker.db')
+transactions = Transaction('tracker.db')
 category = Category('tracker.db')
 
 
@@ -78,6 +78,30 @@ def process_choice(choice):
         desc = input("new category description: ")
         cat = {'name':name, 'desc':desc}
         category.update(rowid,cat)
+    elif choice =='4':
+        t = transaction.select_all()
+        print_transactions(t)
+    elif choice =='5':
+        print ('adding transaction')
+        item=int(input('item #: ')
+        amount=int(input('amount: '))
+        category=input('category: ')
+        date=input("date yyyymmdd:")
+        desc=input('description: ')
+        t={'item':item,'amount':amount,'category'=category, 'date':date,'description':desc}
+        transactions.add(t)
+    elif choice =='6':
+        print ('here are the current transactions: ')
+        t = transaction.select_all()
+        print_transactions(t)
+        row=int(input('which transaction would you like to delete? '))
+        transactions.delete(row)
+    elif choice =='7':
+    elif choice =='8':
+    elif choice =='9':
+    elif choice =='10':
+    elif choice =='11':
+        print (menu)
     else:
         print("choice",choice,"not yet implemented")
 
@@ -109,7 +133,7 @@ def print_transactions(items):
         'item #','amount','category','date','description'))
     print('-'*40)
     for item in items:
-        values = tuple(item.values()) 
+        values = tuple(item.values())
         print("%-10s %-10d %-10s %-10d %-30s"%values)
 
 def print_category(cat):
@@ -125,4 +149,3 @@ def print_categories(cats):
 # here is the main call!
 
 toplevel()
-
