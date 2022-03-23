@@ -80,8 +80,7 @@ class Category():
         con.close()
 
     def delete(self,rowid):
-        ''' add a category to the categories table.
-            this returns the rowid of the inserted element
+        ''' delete a category from the categories table with a given rowid
         '''
         con= sqlite3.connect(self.dbfile)
         cur = con.cursor()
