@@ -79,7 +79,7 @@ def process_choice(choice):
         cat = {'name':name, 'desc':desc}
         category.update(rowid,cat)
     elif choice =='4':
-        t = transaction.select_all()
+        t = transactions.select_all()
         print_transactions(t)
     elif choice =='5':
         print ('adding transaction')
