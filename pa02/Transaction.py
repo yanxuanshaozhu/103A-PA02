@@ -28,3 +28,27 @@ class Transaction:
         conn.commit()
         conn.close()
         return data_to_list(rows)
+    def delete(self,rowid):
+        ''' add a category to the categories table.
+                this returns the rowid of the inserted element
+        '''
+        con= sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        cur.execute('''DELETE FROM transactions
+                           WHERE rowid=(?);
+        ''',(rowid,))
+        con.commit()
+        con.close()
+    def add(self,item):
+        ''' add a category to the categories table.
+            this returns the rowid of the inserted element
+        '''
+        con= sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        cur.execute("INSERT INTO transactions VALUES(?,?,?,?,?)",(item['item'],item['amount'],item['category'],item['date'],item['description']))
+        con.commit()
+        cur.execute("SELECT last_insert_rowid()")
+        last_rowid = cur.fetchone()
+        con.commit()
+        con.close()
+        return last_rowid[0]
