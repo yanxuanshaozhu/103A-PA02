@@ -39,7 +39,7 @@ category = Category('tracker.db')
 
 # here is the menu for the tracker app
 
-menu = '''
+MENU = '''
 0. quit
 1. show categories
 2. add category
@@ -56,6 +56,7 @@ menu = '''
 
 
 def process_choice(choice):
+    """ process the user's choice"""
     if choice == '0':
         return
     elif choice == '1':
@@ -74,8 +75,8 @@ def process_choice(choice):
         cat = {'name': name, 'desc': desc}
         category.update(rowid, cat)
     elif choice == '4':
-        t = transactions.select_all()
-        print_transactions(t)
+        res = transactions.select_all()
+        print_transactions(res)
     elif choice == '5':
         print('adding transaction')
         item = int(input('item #: '))
@@ -83,33 +84,33 @@ def process_choice(choice):
         cat = input('category: ')
         date = input("date yyyymmdd:")
         desc = input('description: ')
-        t = {'item': item, 'amount': amount, 'category': cat, 'date': date, 'description': desc}
-        transactions.add(t)
+        trans = {'item': item, 'amount': amount, 'category': cat, 'date': date, 'description': desc}
+        transactions.add(trans)
     elif choice == '6':
         print('here are the current transactions: ')
-        t = transactions.select_all()
-        print_transactions(t)
+        res = transactions.select_all()
+        print_transactions(res)
         row = int(input('which transaction would you like to delete? '))
         transactions.delete(row)
     elif choice == '7':
         print("Summary of transactions by date:")
-        t = transactions.summary_by_date()
-        print_transactions(t)
+        res = transactions.summary_by_date()
+        print_transactions(res)
     elif choice == '8':
         print("Summary of transactions by month:")
-        t = transactions.summary_by_month()
-        print_transactions(t)
+        res = transactions.summary_by_month()
+        print_transactions(res)
     elif choice == '9':
         print("Summary of transactions by year:")
-        t = transactions.summary_by_year()
-        print_transactions(t)
+        res = transactions.summary_by_year()
+        print_transactions(res)
     elif choice == '10':
         print("Summary of transactions by category:")
-        t = transactions.summary_by_category()
-        print_transactions(t)
+        res = transactions.summary_by_category()
+        print_transactions(res)
     elif choice == '11':
         print("Here is the menu:")
-        print(menu)
+        print(MENU)
     else:
         print("choice", choice, "not yet implemented")
 
@@ -119,7 +120,7 @@ def process_choice(choice):
 
 def toplevel():
     """ handle the user's choice """
-    print(menu)
+    print(MENU)
     choice = input("> ")
     while choice != '0':
         choice = process_choice(choice)
@@ -137,7 +138,7 @@ def print_transactions(items):
         return
     print('\n')
 
-    print(f"{'rowid':<10} {'item #':<10} {'amount':<10} {'category':<10} {'date':<10} {'description':<30}")
+    print(f"{'rowid':<10} {'item':<10} {'amount':<10} {'category':<10} {'date':<10} {'description':<30}")
     print('-' * 68)
     for item in items:
         values = tuple(item.values())
@@ -145,10 +146,12 @@ def print_transactions(items):
 
 
 def print_category(cat):
+    """ print one category """
     print(f"{cat['rowid']:<3d} {cat['name']:<10} {cat['desc']:<30}")
 
 
 def print_categories(cats):
+    """ print the categories"""
     print(f"{'id':<3} {'name':<10} {'description':<30}")
     print('-' * 45)
     for cat in cats:

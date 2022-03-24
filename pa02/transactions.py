@@ -60,11 +60,11 @@ class Transaction:
             """)
         con.commit()
         con.close()
-        self.db = filename
+        self.database = filename
 
     def select_all(self):
         """ return all transactions as a list of dictionary"""
-        conn = sqlite3.connect(self.db)
+        conn = sqlite3.connect(self.database)
         cur = conn.cursor()
         cur.execute("""SELECT rowid, * FROM transactions;""")
         rows = cur.fetchall()
@@ -74,7 +74,7 @@ class Transaction:
 
     def select_one(self, rowid):
         """ return a transaction with a specified rowid """
-        conn = sqlite3.connect(self.db)
+        conn = sqlite3.connect(self.database)
         cur = conn.cursor()
         cur.execute("""SELECT rowid, * FROM transactions where rowid = (?);""", (rowid,))
         rows = cur.fetchall()
@@ -85,7 +85,7 @@ class Transaction:
     def delete(self, rowid):
         """ delete a transaction from the transaction table with a given rowid
         """
-        con = sqlite3.connect(self.db)
+        con = sqlite3.connect(self.database)
         cur = con.cursor()
         cur.execute("""
                     DELETE FROM transactions
@@ -98,7 +98,7 @@ class Transaction:
         """ add a transaction to the transactions table
             and returns the rowid of the inserted element
         """
-        con = sqlite3.connect(self.db)
+        con = sqlite3.connect(self.database)
         cur = con.cursor()
         cur.execute("""INSERT INTO transactions VALUES(?,?,?,?,?);""",
                     (item['item'], item['amount'], item['category'],
@@ -112,7 +112,7 @@ class Transaction:
 
     def summary_by_date(self):
         """ this method calculates the total transaction for different dates"""
-        con = sqlite3.connect(self.db)
+        con = sqlite3.connect(self.database)
         cur = con.cursor()
         cur.execute("""
                     SELECT Sum(amount) AS total,
@@ -128,7 +128,7 @@ class Transaction:
 
     def summary_by_month(self):
         """ this method calculates the total transaction for different months"""
-        con = sqlite3.connect(self.db)
+        con = sqlite3.connect(self.database)
         cur = con.cursor()
         cur.execute("""
                     SELECT Sum(amount)          AS total,
@@ -144,7 +144,7 @@ class Transaction:
 
     def summary_by_year(self):
         """ this method calculates the total transaction for different years"""
-        con = sqlite3.connect(self.db)
+        con = sqlite3.connect(self.database)
         cur = con.cursor()
         cur.execute("""
                     SELECT Sum(amount)          AS total,
@@ -160,7 +160,7 @@ class Transaction:
 
     def summary_by_category(self):
         """ this method calculates the total transaction for different categories"""
-        con = sqlite3.connect(self.db)
+        con = sqlite3.connect(self.database)
         cur = con.cursor()
         cur.execute("""
             SELECT Sum(amount) AS total,

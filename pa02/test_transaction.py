@@ -71,21 +71,21 @@ def test_init(setup_test_init):
     Test __init__ of the Transaction class
     :param setup_test_init: pytest fixture, takes care of creating and removing database files
     """
-    path = setup_test_init.db
+    path = setup_test_init.database
     con = sqlite3.connect(path)
     cur = con.cursor()
     cur.execute("PRAGMA table_info(transactions)")
     result = cur.fetchall()
-    assert result == [(0, 'item', 'INT', 0, None, 0),
-                      (1, 'amount', 'INT', 0, None, 0),
-                      (2, 'category', 'TEXT', 0, None, 0),
-                      (3, 'date', 'TEXT', 0, None, 0),
-                      (4, 'description', 'TEXT', 0, None, 0)] or \
-           result == [(0, 'item', 'int', 0, None, 0),
-                      (1, 'amount', 'int', 0, None, 0),
-                      (2, 'category', 'text', 0, None, 0),
-                      (3, 'date', 'text', 0, None, 0),
-                      (4, 'description', 'text', 0, None, 0)]
+    assert result in ([(0, 'item', 'INT', 0, None, 0),
+                       (1, 'amount', 'INT', 0, None, 0),
+                       (2, 'category', 'TEXT', 0, None, 0),
+                       (3, 'date', 'TEXT', 0, None, 0),
+                       (4, 'description', 'TEXT', 0, None, 0)],
+                      [(0, 'item', 'int', 0, None, 0),
+                       (1, 'amount', 'int', 0, None, 0),
+                       (2, 'category', 'text', 0, None, 0),
+                       (3, 'date', 'text', 0, None, 0),
+                       (4, 'description', 'text', 0, None, 0)])
 
 
 def test_select_all(setup_and_teardown):
