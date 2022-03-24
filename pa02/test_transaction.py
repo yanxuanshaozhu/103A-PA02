@@ -41,6 +41,7 @@ def setup_and_teardown():
 
 @pytest.fixture
 def setup_test_init():
+    global db
     db = Transaction('test.db')
     yield
     os.remove('test.db')
@@ -53,27 +54,27 @@ def test_init(setup_test_init):
 def test_select_all(setup_and_teardown):
     global db
     assert db.select_all() == [
-        {'item #': 1, 'amount': 2, 'category': 'test1', 'date': '2022-03-21', 'desc': 'This is a test'},
-        {'item #': 2, 'amount': 2, 'category': 'test1', 'date': '2022-03-21', 'desc': 'This is test 1'},
-        {'item #': 3, 'amount': 3, 'category': 'test2', 'date': '2022-03-21', 'desc': 'This is a test 2'},
-        {'item #': 4, 'amount': 3, 'category': 'test2', 'date': '2022-03-22', 'desc': 'This is a test 3'},
-        {'item #': 5, 'amount': 4, 'category': 'test2', 'date': '2022-03-22', 'desc': 'This is a test 4'},
-        {'item #': 6, 'amount': 2, 'category': 'test2', 'date': '2022-04-24', 'desc': 'This is a test 5'},
-        {'item #': 7, 'amount': 1, 'category': 'test2', 'date': '2022-04-25', 'desc': 'This is a test 6'},
-        {'item #': 8, 'amount': 1, 'category': 'test2', 'date': '2023-02-22', 'desc': 'This is a test 7'}
+        {'rowid': 1, 'item': 1, 'amount': 2, 'category': 'test1', 'date': '2022-03-21', 'desc': 'This is a test'},
+        {'rowid': 2, 'item': 2, 'amount': 2, 'category': 'test1', 'date': '2022-03-21', 'desc': 'This is test 1'},
+        {'rowid': 3, 'item': 3, 'amount': 3, 'category': 'test2', 'date': '2022-03-21', 'desc': 'This is a test 2'},
+        {'rowid': 4, 'item': 4, 'amount': 3, 'category': 'test2', 'date': '2022-03-22', 'desc': 'This is a test 3'},
+        {'rowid': 5, 'item': 5, 'amount': 4, 'category': 'test2', 'date': '2022-03-22', 'desc': 'This is a test 4'},
+        {'rowid': 6, 'item': 6, 'amount': 2, 'category': 'test2', 'date': '2022-04-24', 'desc': 'This is a test 5'},
+        {'rowid': 7, 'item': 7, 'amount': 1, 'category': 'test2', 'date': '2022-04-25', 'desc': 'This is a test 6'},
+        {'rowid': 8, 'item': 8, 'amount': 1, 'category': 'test2', 'date': '2023-02-22', 'desc': 'This is a test 7'}
     ]
 
 
 def test_delete(setup_and_teardown):
     db.delete(3)
     assert db.select_all() == [
-        {'item #': 1, 'amount': 2, 'category': 'test1', 'date': '2022-03-21', 'desc': 'This is a test'},
-        {'item #': 2, 'amount': 2, 'category': 'test1', 'date': '2022-03-21', 'desc': 'This is test 1'},
-        {'item #': 4, 'amount': 3, 'category': 'test2', 'date': '2022-03-22', 'desc': 'This is a test 3'},
-        {'item #': 5, 'amount': 4, 'category': 'test2', 'date': '2022-03-22', 'desc': 'This is a test 4'},
-        {'item #': 6, 'amount': 2, 'category': 'test2', 'date': '2022-04-24', 'desc': 'This is a test 5'},
-        {'item #': 7, 'amount': 1, 'category': 'test2', 'date': '2022-04-25', 'desc': 'This is a test 6'},
-        {'item #': 8, 'amount': 1, 'category': 'test2', 'date': '2023-02-22', 'desc': 'This is a test 7'},
+        {'rowid': 1, 'item': 1, 'amount': 2, 'category': 'test1', 'date': '2022-03-21', 'desc': 'This is a test'},
+        {'rowid': 2, 'item': 2, 'amount': 2, 'category': 'test1', 'date': '2022-03-21', 'desc': 'This is test 1'},
+        {'rowid': 4, 'item': 4, 'amount': 3, 'category': 'test2', 'date': '2022-03-22', 'desc': 'This is a test 3'},
+        {'rowid': 5, 'item': 5, 'amount': 4, 'category': 'test2', 'date': '2022-03-22', 'desc': 'This is a test 4'},
+        {'rowid': 6, 'item': 6, 'amount': 2, 'category': 'test2', 'date': '2022-04-24', 'desc': 'This is a test 5'},
+        {'rowid': 7, 'item': 7, 'amount': 1, 'category': 'test2', 'date': '2022-04-25', 'desc': 'This is a test 6'},
+        {'rowid': 8, 'item': 8, 'amount': 1, 'category': 'test2', 'date': '2023-02-22', 'desc': 'This is a test 7'},
     ]
     db.delete(1)
     db.delete(2)
@@ -86,53 +87,56 @@ def test_delete(setup_and_teardown):
 
 
 def test_add(setup_and_teardown):
-    db.add({'item #': 20, 'amount': 3, 'category': 'test_add', 'date': '2022-03-23', 'description': 'Testing add'})
+    db.add({'item': 20, 'amount': 3, 'category': 'test_add', 'date': '2022-03-23', 'description': 'Testing add'})
     assert db.select_all() == [
-        {'item #': 1, 'amount': 2, 'category': 'test1', 'date': '2022-03-21', 'desc': 'This is a test'},
-        {'item #': 2, 'amount': 2, 'category': 'test1', 'date': '2022-03-21', 'desc': 'This is test 1'},
-        {'item #': 3, 'amount': 3, 'category': 'test2', 'date': '2022-03-21', 'desc': 'This is a test 2'},
-        {'item #': 4, 'amount': 3, 'category': 'test2', 'date': '2022-03-22', 'desc': 'This is a test 3'},
-        {'item #': 5, 'amount': 4, 'category': 'test2', 'date': '2022-03-22', 'desc': 'This is a test 4'},
-        {'item #': 6, 'amount': 2, 'category': 'test2', 'date': '2022-04-24', 'desc': 'This is a test 5'},
-        {'item #': 7, 'amount': 1, 'category': 'test2', 'date': '2022-04-25', 'desc': 'This is a test 6'},
-        {'item #': 8, 'amount': 1, 'category': 'test2', 'date': '2023-02-22', 'desc': 'This is a test 7'},
-        {'item #': 20, 'amount': 3, 'category': 'test_add', 'date': '2022-03-23', 'desc': 'Testing add'}
+        {'rowid': 1, 'item': 1, 'amount': 2, 'category': 'test1', 'date': '2022-03-21', 'desc': 'This is a test'},
+        {'rowid': 2, 'item': 2, 'amount': 2, 'category': 'test1', 'date': '2022-03-21', 'desc': 'This is test 1'},
+        {'rowid': 3, 'item': 3, 'amount': 3, 'category': 'test2', 'date': '2022-03-21', 'desc': 'This is a test 2'},
+        {'rowid': 4, 'item': 4, 'amount': 3, 'category': 'test2', 'date': '2022-03-22', 'desc': 'This is a test 3'},
+        {'rowid': 5, 'item': 5, 'amount': 4, 'category': 'test2', 'date': '2022-03-22', 'desc': 'This is a test 4'},
+        {'rowid': 6, 'item': 6, 'amount': 2, 'category': 'test2', 'date': '2022-04-24', 'desc': 'This is a test 5'},
+        {'rowid': 7, 'item': 7, 'amount': 1, 'category': 'test2', 'date': '2022-04-25', 'desc': 'This is a test 6'},
+        {'rowid': 8, 'item': 8, 'amount': 1, 'category': 'test2', 'date': '2023-02-22', 'desc': 'This is a test 7'},
+        {'rowid': 9, 'item': 20, 'amount': 3, 'category': 'test_add', 'date': '2022-03-23', 'desc': 'Testing add'}
     ]
 
+
 @pytest.mark.add1
-def test_add1(med_db):
+def test_add1(setup_and_teardown):
     """ add a transaction to db, then select it, then delete it"""
 
     tran0 = {'name': 'testing_add',
-            'desc': 'see if it works',
-            }
-    trans0 = med_db.select_all()
-    rowid = med_db.add(tran0)
-    trans1 = med_db.select_all()
+             'desc': 'see if it works',
+             }
+    trans0 = db.select_all()
+    rowid = db.add(tran0)
+    trans1 = db.select_all()
     assert len(trans1) == len(trans0) + 1
-    tran1 = med_db.select_one(rowid)
+    tran1 = db.select_one(rowid)
     assert tran1['name'] == tran0['name']
     assert tran1['desc'] == tran0['desc']
 
+
 @pytest.mark.delete1
-def test_delete1(med_db):
+def test_delete1(setup_and_teardown):
     """ add a transaction to db, delete it, and see that the size changes"""
     # first we get the initial table
-    trans0 = med_db.select_all()
+    trans0 = db.select_all()
 
     # then we add this transaction to the table and get the new list of rows
     tran0 = {'name': 'testing_add',
-            'desc': 'see if it works',
-            }
-    rowid = med_db.add(tran0)
-    trans1 = med_db.select_all()
+             'desc': 'see if it works',
+             }
+    rowid = db.add(tran0)
+    trans1 = db.select_all()
 
     # now we delete the transaction and again get the new list of rows
-    med_db.delete(rowid)
-    trans2 = med_db.select_all()
+    db.delete(rowid)
+    trans2 = db.select_all()
 
     assert len(trans0) == len(trans2)
     assert len(trans2) == len(trans1) - 1
+
 
 def test_summary_by_date(setup_and_teardown):
     assert db.summary_by_date() == [
