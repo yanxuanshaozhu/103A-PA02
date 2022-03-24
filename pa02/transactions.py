@@ -23,18 +23,51 @@ class Transaction:
     def select_all(self):
         conn = sqlite3.connect(self.db)
         cur = conn.cursor()
-        cur.execute("select * from transactions")
+        cur.execute("SELECT * from transactions")
         rows = cur.fetchall()
         conn.commit()
         conn.close()
         return data_to_list(rows)
 
-    def select_one(self, item):
-        """ return a category with a specified rowid """
-        con = sqlite3.connect(self.db)
+    def delete(self,rowid):
+        """ delete a transaction from the transactions table with a given rowid
+        """
+        con= sqlite3.connect(self.dbfile)
         cur = con.cursor()
-        cur.execute("SELECT * from transactions where item=(?)", item)
-        tuples = cur.fetchall()
+        cur.execute('''DELETE FROM transactions
+                           WHERE rowid=(?);
+        ''',(rowid,))
         con.commit()
         con.close()
-        return data_to_list(tuples[0])
+
+    def add(self,item):
+        ''' add a transaction to the transactions table.
+            this returns the rowid of the inserted element
+        '''
+        con= sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        cur.execute("INSERT INTO transactions VALUES(?,?,?,?,?)",(item['item'],item['amount'],item['category'],item['date'],item['description']))
+        con.commit()
+        cur.execute("SELECT last_insert_rowid()")
+        last_rowid = cur.fetchone()
+        con.commit()
+        con.close()
+        return last_rowid[0]
+    def summary_by_date(self):
+        con= sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        cur.execute("SELECT item, amount, category, date as n, description from transactions group by date order by n")
+        results=cur.fetchall()
+        con.commit()
+        con.close()
+        return results
+    def summary_by_category(self):
+        con= sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        cur.execute("SELECT item, amount, category as n, date, description from transactions group by category order by n")
+        results=cur.fetchall()
+        con.commit()
+        con.close()
+        return results
+
+
