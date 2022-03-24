@@ -53,7 +53,7 @@ def setup_and_teardown(tmpdir):
 
     con.commit()
     con.close()
-    return db
+    return database
 
 
 @pytest.fixture
@@ -146,7 +146,7 @@ def test_add(setup_and_teardown):
     :param setup_and_teardown: pytest fixture, takes care of creating and removing database files
     """
     setup_and_teardown.add({'item': 20, 'amount': 3, 'category': 'test_add',
-            'date': '2022-03-23', 'description': 'Testing add'})
+                            'date': '2022-03-23', 'description': 'Testing add'})
     assert setup_and_teardown.select_all() == [
         {'rowid': 1, 'item': 1, 'amount': 2, 'category': 'test1',
          'date': '2022-03-21', 'desc': 'This is a test'},
@@ -183,12 +183,9 @@ def test_add1(setup_and_teardown):
              'description': 'testing'
              }
     trans0 = setup_and_teardown.select_all()
-    rowid = setup_and_teardown.add(tran0)
+    setup_and_teardown.add(tran0)
     trans1 = setup_and_teardown.select_all()
     assert len(trans1) == len(trans0) + 1
-
-  
-
 
 
 @pytest.mark.delete1

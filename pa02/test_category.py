@@ -2,7 +2,12 @@
 test_categories runs unit and integration tests on the category module
 """
 
+# Since we are using pytest fixtures, redefining outer name is necessary
+# pylint: disable=redefined-outer-name
+
+
 import pytest
+
 from category import Category, to_cat_dict
 
 
@@ -15,8 +20,7 @@ def dbfile(tmpdir):
 @pytest.fixture
 def empty_db(dbfile):
     """ create an empty database """
-    db = Category(dbfile)
-    yield db
+    yield Category(dbfile)
 
 
 @pytest.fixture
@@ -40,9 +44,8 @@ def med_db(small_db):
     rowids = []
     # add 10 categories
     for i in range(10):
-        s = str(i)
-        cat = {'name': 'name' + s,
-               'desc': 'description ' + s,
+        cat = {'name': 'name' + str(i),
+               'desc': 'description ' + str(i),
                }
         rowid = small_db.add(cat)
         rowids.append(rowid)
@@ -56,12 +59,12 @@ def med_db(small_db):
 
 @pytest.mark.simple
 def test_to_cat_dict():
-    """ teting the to_cat_dict function """
-    a = to_cat_dict((7, 'testcat', 'testdesc'))
-    assert a['rowid'] == 7
-    assert a['name'] == 'testcat'
-    assert a['desc'] == 'testdesc'
-    assert len(a.keys()) == 3
+    """ testing the to_cat_dict function """
+    result = to_cat_dict((7, 'testcat', 'testdesc'))
+    assert result['rowid'] == 7
+    assert result['name'] == 'testcat'
+    assert result['desc'] == 'testdesc'
+    assert len(result.keys()) == 3
 
 
 @pytest.mark.add
