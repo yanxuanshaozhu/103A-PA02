@@ -106,6 +106,10 @@ class Transaction:
         return results
 
     def summary_by_month(self):
+        """
+        Return an summary of monthly amount.
+        :return:
+        """
         con = sqlite3.connect(self.db)
         cur = con.cursor()
         cur.execute("""
