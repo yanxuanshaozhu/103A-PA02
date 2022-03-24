@@ -99,6 +99,40 @@ def test_add(setup_and_teardown):
         {'item #': 20, 'amount': 3, 'category': 'test_add', 'date': '2022-03-23', 'desc': 'Testing add'}
     ]
 
+@pytest.mark.add1
+def test_add1(med_db):
+    """ add a transaction to db, then select it, then delete it"""
+
+    tran0 = {'name': 'testing_add',
+            'desc': 'see if it works',
+            }
+    trans0 = med_db.select_all()
+    rowid = med_db.add(tran0)
+    trans1 = med_db.select_all()
+    assert len(trans1) == len(trans0) + 1
+    tran1 = med_db.select_one(rowid)
+    assert tran1['name'] == tran0['name']
+    assert tran1['desc'] == tran0['desc']
+
+@pytest.mark.delete1
+def test_delete1(med_db):
+    """ add a transaction to db, delete it, and see that the size changes"""
+    # first we get the initial table
+    trans0 = med_db.select_all()
+
+    # then we add this transaction to the table and get the new list of rows
+    tran0 = {'name': 'testing_add',
+            'desc': 'see if it works',
+            }
+    rowid = med_db.add(tran0)
+    trans1 = med_db.select_all()
+
+    # now we delete the transaction and again get the new list of rows
+    med_db.delete(rowid)
+    trans2 = med_db.select_all()
+
+    assert len(trans0) == len(trans2)
+    assert len(trans2) == len(trans1) - 1
 
 def test_summary_by_date(setup_and_teardown):
     assert db.summary_by_date() == [
