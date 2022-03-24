@@ -31,8 +31,8 @@ could be replaced with PostgreSQL or Pandas or straight python lists
 
 """
 
-from transactions import Transaction
 from category import Category
+from transactions import Transaction
 
 transactions = Transaction('tracker.db')
 category = Category('tracker.db')
@@ -136,20 +136,20 @@ def print_transactions(items):
         print('no items to print')
         return
     print('\n')
-  
-    print("%-10s %-10s %-10s %-10s %-10s %-30s" % (
-        'rowid','item #', 'amount', 'category', 'date', 'description'))
+
+    print(f"{'rowid':<10} {'item #':<10} {'amount':<10} {'category':<10} {'date':<10} {'description':<30}")
     print('-' * 68)
     for item in items:
         values = tuple(item.values())
         print("%-10d %-10d %-10d %-10s %-10s %-30s" % values)
 
+
 def print_category(cat):
-    print("%-3d %-10s %-30s" % (cat['rowid'], cat['name'], cat['desc']))
+    print(f"{cat['rowid']:<3d} {cat['name']:<10} {cat['desc']:<30}")
 
 
 def print_categories(cats):
-    print("%-3s %-10s %-30s" % ("id", "name", "description"))
+    print(f"{'id':<3} {'name':<10} {'description':<30}")
     print('-' * 45)
     for cat in cats:
         print_category(cat)
