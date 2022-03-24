@@ -225,11 +225,11 @@ def test_summary_by_date(setup_and_teardown):
     Test summary_by_date() method.
     :param setup_and_teardown: pytest fixture, takes care of creating and removing database files
     """
-    assert setup_and_teardown.summary_by_date() == [(1, '2022-04-25'),
-                                                    (1, '2023-02-22'),
-                                                    (2, '2022-04-24'),
-                                                    (7, '2022-03-21'),
-                                                    (7, '2022-03-22')]
+    assert setup_and_teardown.summary_by_date() == [{'date': '2022-04-25', 'total': 1},
+                                                    {'date': '2023-02-22', 'total': 1},
+                                                    {'date': '2022-04-24', 'total': 2},
+                                                    {'date': '2022-03-21', 'total': 7},
+                                                    {'date': '2022-03-22', 'total': 7}]
 
 
 def test_summary_by_month(setup_and_teardown):
@@ -237,9 +237,9 @@ def test_summary_by_month(setup_and_teardown):
     Test summary_by_month() method.
     :param setup_and_teardown: pytest fixture, takes care of creating and removing database files
     """
-    assert setup_and_teardown.summary_by_month() == [(1, '02'),
-                                                     (3, '04'),
-                                                     (14, '03')]
+    assert setup_and_teardown.summary_by_month() == [{'month': '02', 'total': 1},
+                                                     {'month': '04', 'total': 3},
+                                                     {'month': '03', 'total': 14}]
 
 
 def test_summary_by_year(setup_and_teardown):
@@ -247,8 +247,8 @@ def test_summary_by_year(setup_and_teardown):
     Test summary_by_year() method.
     :param setup_and_teardown: pytest fixture, takes care of creating and removing database files
     """
-    assert setup_and_teardown.summary_by_year() == [(1, '2023'),
-                                                    (17, '2022')]
+    assert setup_and_teardown.summary_by_year() == [{'total': 1, 'year': '2023'},
+                                                    {'total': 17, 'year': '2022'}]
 
 
 def test_summary_by_category(setup_and_teardown):
@@ -256,5 +256,5 @@ def test_summary_by_category(setup_and_teardown):
     Test summary_by_category() method.
     :param setup_and_teardown: pytest fixture, takes care of creating and removing database files
     """
-    assert setup_and_teardown.summary_by_category() == [(4, 'test1'),
-                                                        (14, 'test2')]
+    assert setup_and_teardown.summary_by_category() == [{'category': 'test1', 'total': 4},
+                                                        {'category': 'test2', 'total': 14}]

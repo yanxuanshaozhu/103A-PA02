@@ -19,23 +19,44 @@ def data_to_dict(data):
 
 
 def data_to_list(data):
-    """ this method converts a list of data tuple to a list of data dictionary"""
+    """ this method converts data from a list of tuples to a list of dictionaries"""
     return [data_to_dict(row) for row in data]
 
 
+def summarize_by_date_formatter(data):
+    """ this method converts data from a list of tuples to a list of dictionaries"""
+    return [{'total': row[0], 'date': row[1]} for row in data]
+
+
+def summarize_by_month_formatter(data):
+    """ this method converts data from a list of tuples to a list of dictionaries"""
+    return [{'total': row[0], 'month': row[1]} for row in data]
+
+
+def summarize_by_year_formatter(data):
+    """ this method converts data from a list of tuples to a list of dictionaries"""
+    return [{'total': row[0], 'year': row[1]} for row in data]
+
+
+def summarize_by_category_formatter(data):
+    """ this method converts data from a list of tuples to a list of dictionaries"""
+    return [{'total': row[0], 'category': row[1]} for row in data]
+
+
 class Transaction:
-    """Transaction represents a table of transactions"""
+    """ Transaction represents a table of transactions"""
+
     def __init__(self, filename):
         con = sqlite3.connect(filename)
         cur = con.cursor()
         cur.execute(
             """
             CREATE TABLE IF NOT EXISTS transactions (
-                    item int, 
-                    amount int, 
-                    category text, 
-                    date text, 
-                    description text);
+                    item INT, 
+                    amount INT, 
+                    category TEXT, 
+                    date TEXT, 
+                    description TEXT);
             """)
         con.commit()
         con.close()
@@ -90,7 +111,7 @@ class Transaction:
         return last_rowid[0]
 
     def summary_by_date(self):
-        """return a list of """
+        """ this method calculates the total transaction for different dates"""
         con = sqlite3.connect(self.db)
         cur = con.cursor()
         cur.execute("""
@@ -103,13 +124,10 @@ class Transaction:
         results = cur.fetchall()
         con.commit()
         con.close()
-        return results
+        return summarize_by_date_formatter(results)
 
     def summary_by_month(self):
-        """
-        Return an summary of monthly amount.
-        :return:
-        """
+        """ this method calculates the total transaction for different months"""
         con = sqlite3.connect(self.db)
         cur = con.cursor()
         cur.execute("""
@@ -122,9 +140,10 @@ class Transaction:
         results = cur.fetchall()
         con.commit()
         con.close()
-        return results
+        return summarize_by_month_formatter(results)
 
     def summary_by_year(self):
+        """ this method calculates the total transaction for different years"""
         con = sqlite3.connect(self.db)
         cur = con.cursor()
         cur.execute("""
@@ -137,9 +156,10 @@ class Transaction:
         results = cur.fetchall()
         con.commit()
         con.close()
-        return results
+        return summarize_by_year_formatter(results)
 
     def summary_by_category(self):
+        """ this method calculates the total transaction for different categories"""
         con = sqlite3.connect(self.db)
         cur = con.cursor()
         cur.execute("""
@@ -152,4 +172,4 @@ class Transaction:
         results = cur.fetchall()
         con.commit()
         con.close()
-        return results
+        return summarize_by_category_formatter(results)
