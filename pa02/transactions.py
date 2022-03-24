@@ -1,16 +1,36 @@
+"""
+transactions.py is an Object Relational Mapping to the transactions table
+
+The ORM will work map SQL rows with the schema
+    (rowid, item, amount, category, date, description)
+to Python Dictionaries.
+
+This app will store the data in a SQLite database ~/tracker.db
+
+"""
+
 import sqlite3
 
+
 def data_to_dict(data):
-    return {'rowid': int(data[0]), 'item': int(data[1]), 'amount': int(data[2]), 'category': data[3], 'date': data[4],
-            'desc': data[5]}
+    """ this method converts a data tuple to dictionary format"""
+    return {'rowid': int(data[0]), 'item': int(data[1]), 'amount': int(data[2]),
+            'category': data[3], 'date': data[4], 'desc': data[5]}
+
+
 def data_to_list(data):
+    """ this method converts a list of data tuple to a list of data dictionary"""
     return [data_to_dict(row) for row in data]
+
+
 class Transaction:
+    """Transaction represents a table of transactions"""
     def __init__(self, filename):
         con = sqlite3.connect(filename)
         cur = con.cursor()
         cur.execute(
-            """CREATE TABLE IF NOT EXISTS transactions (
+            """
+            CREATE TABLE IF NOT EXISTS transactions (
                     item int, 
                     amount int, 
                     category text, 
@@ -22,6 +42,7 @@ class Transaction:
         self.db = filename
 
     def select_all(self):
+        """ return all transactions as a list of dictionary"""
         conn = sqlite3.connect(self.db)
         cur = conn.cursor()
         cur.execute("""SELECT rowid, * FROM transactions;""")
@@ -31,6 +52,7 @@ class Transaction:
         return data_to_list(rows)
 
     def select_one(self, rowid):
+        """ return a transaction with a specified rowid """
         conn = sqlite3.connect(self.db)
         cur = conn.cursor()
         cur.execute("""SELECT rowid, * FROM transactions where rowid = (?);""", (rowid,))
@@ -52,14 +74,14 @@ class Transaction:
         con.close()
 
     def add(self, item):
-        """ add a transaction to the transactions table.
-            this returns the rowid of the inserted element
+        """ add a transaction to the transactions table
+            and returns the rowid of the inserted element
         """
         con = sqlite3.connect(self.db)
         cur = con.cursor()
-        cur.execute("""INSERT INTO transactions 
-                       VALUES(?,?,?,?,?);""",
-                    (item['item'], item['amount'], item['category'], item['date'], item['description']))
+        cur.execute("""INSERT INTO transactions VALUES(?,?,?,?,?);""",
+                    (item['item'], item['amount'], item['category'],
+                     item['date'], item['description']))
         con.commit()
         cur.execute("SELECT last_insert_rowid()")
         last_rowid = cur.fetchone()
@@ -68,6 +90,7 @@ class Transaction:
         return last_rowid[0]
 
     def summary_by_date(self):
+        """return a list of """
         con = sqlite3.connect(self.db)
         cur = con.cursor()
         cur.execute("""

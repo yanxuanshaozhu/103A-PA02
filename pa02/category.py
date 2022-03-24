@@ -1,5 +1,5 @@
 """
-category.py is a Object Relational Mapping to the categories table
+category.py is an Object Relational Mapping to the categories table
 
 The ORM will work map SQL rows with the schema
     (rowid,name,description)
@@ -22,7 +22,7 @@ def to_cat_dict_list(cat_tuples):
     return [to_cat_dict(cat) for cat in cat_tuples]
 
 
-class Category():
+class Category:
     """ Category represents a table of categories"""
 
     def __init__(self, dbfile):
