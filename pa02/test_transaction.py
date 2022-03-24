@@ -1,3 +1,13 @@
+"""
+Test transaction database. For each test, a test database is created in temporary directory
+by constructor of Transaction class. Then several records are inserted through sql statement
+to avoid potential errors from the `add` method. After all the tests, the temporary
+directory is removed.
+"""
+
+# Since we are using pytest fixtures, redefining outer name is necessary
+# pylint: disable=redefined-outer-name
+
 import sqlite3
 
 import pytest
@@ -7,8 +17,13 @@ from transactions import Transaction
 
 @pytest.fixture
 def setup_and_teardown(tmpdir):
-    db = Transaction(tmpdir.join('test.db'))
-    con = sqlite3.connect(tmpdir.join('test.db'))
+    """
+    Set up a test database with several records inserted.
+    :param tmpdir: pytest fixture, create a temp dir for the test
+    :return: database instance
+    """
+    database = Transaction(tmpdir.join('test.database'))
+    con = sqlite3.connect(tmpdir.join('test.database'))
     cur = con.cursor()
     cur.execute(
         """CREATE TABLE IF NOT EXISTS transactions
@@ -43,11 +58,19 @@ def setup_and_teardown(tmpdir):
 
 @pytest.fixture
 def setup_test_init(tmpdir):
-    db = Transaction(tmpdir.join('test.db'))
-    return db
+    """
+    Set up an empty database for testing __init__ method
+    :param tmpdir: pytest fixture, create a temp dir
+    :return: database instance
+    """
+    return Transaction(tmpdir.join('test.db'))
 
 
 def test_init(setup_test_init):
+    """
+    Test __init__ of the Transaction class
+    :param setup_test_init: pytest fixture, takes care of creating and removing database files
+    """
     path = setup_test_init.db
     con = sqlite3.connect(path)
     cur = con.cursor()
@@ -61,6 +84,10 @@ def test_init(setup_test_init):
 
 
 def test_select_all(setup_and_teardown):
+    """
+    Test select_all() method
+    :param setup_and_teardown: pytest fixture, takes care of creating and removing database files
+    """
     assert setup_and_teardown.select_all() == [
         {'rowid': 1, 'item': 1, 'amount': 2, 'category': 'test1',
          'date': '2022-03-21', 'desc': 'This is a test'},
@@ -82,6 +109,10 @@ def test_select_all(setup_and_teardown):
 
 
 def test_delete(setup_and_teardown):
+    """
+    Test delete() method. Delete one and then all records in database and test content
+    :param setup_and_teardown: pytest fixture, takes care of creating and removing database files
+    """
     setup_and_teardown.delete(3)
     assert setup_and_teardown.select_all() == [
         {'rowid': 1, 'item': 1, 'amount': 2, 'category': 'test1',
@@ -110,6 +141,10 @@ def test_delete(setup_and_teardown):
 
 
 def test_add(setup_and_teardown):
+    """
+    Test add() method. Add a new record to database and test its content.
+    :param setup_and_teardown: pytest fixture, takes care of creating and removing database files
+    """
     setup_and_teardown.add({'item': 20, 'amount': 3, 'category': 'test_add',
             'date': '2022-03-23', 'description': 'Testing add'})
     assert setup_and_teardown.select_all() == [
@@ -136,7 +171,10 @@ def test_add(setup_and_teardown):
 
 @pytest.mark.add1
 def test_add1(setup_and_teardown):
-    """ add a transaction to db, then select it, then delete it"""
+    """
+    Add a new record to database and test it by selecting it and check lenghth of tht database.
+    :param setup_and_teardown: pytest fixture, takes care of creating and removing database files
+    """
 
     tran0 = {'item': '1',
              'amount': '1',
@@ -155,7 +193,10 @@ def test_add1(setup_and_teardown):
 
 @pytest.mark.delete1
 def test_delete1(setup_and_teardown):
-    """ add a transaction to db, delete it, and see that the size changes"""
+    """
+    Add a transaction to db, delete it, and see that the size changes
+    :param setup_and_teardown: pytest fixture, takes care of creating and removing database files
+    """
     # first we get the initial table
     trans0 = setup_and_teardown.select_all()
 
@@ -178,6 +219,10 @@ def test_delete1(setup_and_teardown):
 
 
 def test_summary_by_date(setup_and_teardown):
+    """
+    Test summary_by_date() method.
+    :param setup_and_teardown: pytest fixture, takes care of creating and removing database files
+    """
     assert setup_and_teardown.summary_by_date() == [(1, '2022-04-25'),
                                                     (1, '2023-02-22'),
                                                     (2, '2022-04-24'),
@@ -186,16 +231,28 @@ def test_summary_by_date(setup_and_teardown):
 
 
 def test_summary_by_month(setup_and_teardown):
+    """
+    Test summary_by_month() method.
+    :param setup_and_teardown: pytest fixture, takes care of creating and removing database files
+    """
     assert setup_and_teardown.summary_by_month() == [(1, '02'),
                                                      (3, '04'),
                                                      (14, '03')]
 
 
 def test_summary_by_year(setup_and_teardown):
+    """
+    Test summary_by_year() method.
+    :param setup_and_teardown: pytest fixture, takes care of creating and removing database files
+    """
     assert setup_and_teardown.summary_by_year() == [(1, '2023'),
                                                     (17, '2022')]
 
 
 def test_summary_by_category(setup_and_teardown):
+    """
+    Test summary_by_category() method.
+    :param setup_and_teardown: pytest fixture, takes care of creating and removing database files
+    """
     assert setup_and_teardown.summary_by_category() == [(4, 'test1'),
                                                         (14, 'test2')]
