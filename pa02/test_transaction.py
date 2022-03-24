@@ -139,13 +139,11 @@ def test_delete1(setup_and_teardown):
 
 
 def test_summary_by_date(setup_and_teardown):
-    assert db.summary_by_date() == [
-        {'amount': 7, 'date': '2022-03-21'},
-        {'amount': 7, 'date': '2022-03-22'},
-        {'amount': 2, 'date': '2022-04-24'},
-        {'amount': 1, 'date': '2022-04-25'},
-        {'amount': 1, 'date': '2023-02-22'}
-    ]
+    assert db.summary_by_date() == [(1, '2022-04-25'),
+                                    (1, '2023-02-22'),
+                                    (2, '2022-04-24'),
+                                    (7, '2022-03-21'),
+                                    (7, '2022-03-22')]
 
 
 def test_summary_by_month(setup_and_teardown):

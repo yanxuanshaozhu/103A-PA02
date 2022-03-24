@@ -38,6 +38,17 @@ class Transaction:
         conn.close()
         return data_to_list(rows)
 
+    def select_one(self, rowid):
+        conn = sqlite3.connect(self.db)
+        cur = conn.cursor()
+        cur.execute("""SELECT rowid, 
+                              * 
+                       FROM transactions where rowid = (?);""", (rowid,))
+        rows = cur.fetchall()
+        conn.commit()
+        conn.close()
+        return data_to_list(rows)
+
     def delete(self, rowid):
         """ delete a transaction from the transaction table with a given rowid
         """
@@ -67,7 +78,7 @@ class Transaction:
         return last_rowid[0]
 
     def summary_by_date(self):
-        con = sqlite3.connect(self.dbfile)
+        con = sqlite3.connect(self.db)
         cur = con.cursor()
         cur.execute("""
                     SELECT Sum(amount) AS total,
@@ -82,7 +93,7 @@ class Transaction:
         return results
 
     def summary_by_month(self):
-        con = sqlite3.connect(self.dbfile)
+        con = sqlite3.connect(self.db)
         cur = con.cursor()
         cur.execute("""
                     SELECT Sum(amount)          AS total,
@@ -97,7 +108,7 @@ class Transaction:
         return results
 
     def summary_by_year(self):
-        con = sqlite3.connect(self.dbfile)
+        con = sqlite3.connect(self.db)
         cur = con.cursor()
         cur.execute("""
                     SELECT Sum(amount)          AS total,
