@@ -150,3 +150,11 @@ def test_summary_by_month(setup_and_teardown):
     assert db.summary_by_month() == [(1, '02'),
                                      (3, '04'),
                                      (14, '03')]
+
+def test_summary_by_year(setup_and_teardown):
+    assert db.summary_by_year() == [(1, '2023'),
+                                    (17, '2022')]
+
+def test_summary_by_category(setup_and_teardown):
+    assert db.summary_by_category() == [(4, 'test1'),
+                                        (14, 'test2')]
