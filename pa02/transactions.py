@@ -59,7 +59,25 @@ class Transaction:
     def summary_by_date(self):
         con = sqlite3.connect(self.dbfile)
         cur = con.cursor()
-        cur.execute("SELECT item, amount, category, date as n, description from transactions group by date order by n")
+        cur.execute("SELECT item, sum(amount), category, date as n, description from transactions group by date order by n")
+        results = cur.fetchall()
+        con.commit()
+        con.close()
+        return results
+
+    def summary_by_month(self):
+        con = sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        cur.execute("SELECT item, sum(amount), category, date as n, description from transactions group by ('%M', date) order by n")
+        results = cur.fetchall()
+        con.commit()
+        con.close()
+        return results
+
+    def summary_by_year(self):
+        con = sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        cur.execute("SELECT item, sum(amount), category, date as n, description from transactions group by ('%Y', date) order by n")
         results = cur.fetchall()
         con.commit()
         con.close()
