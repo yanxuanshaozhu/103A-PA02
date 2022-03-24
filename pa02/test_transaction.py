@@ -148,9 +148,6 @@ def test_add1(setup_and_teardown):
     trans1 = db.select_all()
     assert len(trans1) == len(trans0) + 1
 
-  
-
-
 
 @pytest.mark.delete1
 def test_delete1(setup_and_teardown):
