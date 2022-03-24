@@ -119,8 +119,6 @@ def process_choice(choice):
 
 def toplevel():
     """ handle the user's choice """
-
-    ''' read the command args and process them'''
     print(menu)
     choice = input("> ")
     while choice != '0':

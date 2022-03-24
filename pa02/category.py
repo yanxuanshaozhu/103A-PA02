@@ -35,10 +35,10 @@ class Category():
         self.dbfile = dbfile
 
     def select_all(self):
-        """ return all of the categories as a list of dicts."""
+        """ return all categories as a list of dicts."""
         con = sqlite3.connect(self.dbfile)
         cur = con.cursor()
-        cur.execute("SELECT rowid,* from categories")
+        cur.execute("SELECT rowid, * from categories")
         tuples = cur.fetchall()
         con.commit()
         con.close()
