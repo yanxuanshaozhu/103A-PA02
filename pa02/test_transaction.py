@@ -105,16 +105,19 @@ def test_add(setup_and_teardown):
 def test_add1(setup_and_teardown):
     """ add a transaction to db, then select it, then delete it"""
 
-    tran0 = {'name': 'testing_add',
-             'desc': 'see if it works',
+    tran0 = {'item': '1',
+             'amount': '1',
+             'category':'test',
+             "date":'20220303',
+             'description':'testing'
              }
     trans0 = db.select_all()
     rowid = db.add(tran0)
     trans1 = db.select_all()
     assert len(trans1) == len(trans0) + 1
-    tran1 = db.select_one(rowid)
-    assert tran1['name'] == tran0['name']
-    assert tran1['desc'] == tran0['desc']
+
+  
+
 
 
 @pytest.mark.delete1
@@ -124,10 +127,13 @@ def test_delete1(setup_and_teardown):
     trans0 = db.select_all()
 
     # then we add this transaction to the table and get the new list of rows
-    tran0 = {'name': 'testing_add',
-             'desc': 'see if it works',
+    tran = {'item': '1',
+             'amount': '1',
+             'category':'test',
+             "date":'20220303',
+             'description':'testing'
              }
-    rowid = db.add(tran0)
+    rowid = db.add(tran)
     trans1 = db.select_all()
 
     # now we delete the transaction and again get the new list of rows
