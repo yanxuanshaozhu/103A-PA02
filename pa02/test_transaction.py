@@ -34,7 +34,7 @@ def setup_and_teardown():
 
 @pytest.fixture
 def setup_test_init():
-    Transaction('test.db')
+    db = Transaction('test.db')
     yield
     os.remove('test.db')
 
@@ -45,14 +45,44 @@ def test_init(setup_test_init):
 
 def test_select_all(setup_and_teardown):
     global db
-    result = db.select_all()
-    assert result == [
+    assert db.select_all() == [
         {'item #': 1, 'amount': 2, 'category': 'test1', 'date': '2022-03-21', 'desc': 'This is a test'},
         {'item #': 2, 'amount': 2, 'category': 'test1', 'date': '2022-03-21', 'desc': 'This is test 1'},
         {'item #': 3, 'amount': 3, 'category': 'test2', 'date': '2022-03-21', 'desc': 'This is a test 2'},
         {'item #': 4, 'amount': 3, 'category': 'test2', 'date': '2022-03-22', 'desc': 'This is a test 3'},
-        {'item #': 5, 'amount': 4, 'category': 'test2', 'date': '2022-03-22', 'desc': 'This is a test 4'}]
+        {'item #': 5, 'amount': 4, 'category': 'test2', 'date': '2022-03-22', 'desc': 'This is a test 4'}
+    ]
 
 
 def test_delete(setup_and_teardown):
-    pass
+    db.delete(3)
+    assert db.select_all() == [
+        {'item #': 1, 'amount': 2, 'category': 'test1', 'date': '2022-03-21', 'desc': 'This is a test'},
+        {'item #': 2, 'amount': 2, 'category': 'test1', 'date': '2022-03-21', 'desc': 'This is test 1'},
+        {'item #': 4, 'amount': 3, 'category': 'test2', 'date': '2022-03-22', 'desc': 'This is a test 3'},
+        {'item #': 5, 'amount': 4, 'category': 'test2', 'date': '2022-03-22', 'desc': 'This is a test 4'}
+    ]
+    db.delete(1)
+    db.delete(2)
+    db.delete(4)
+    db.delete(5)
+    assert db.select_all() == []
+
+
+def test_add(setup_and_teardown):
+    db.add({'item #': 6, 'amount': 3, 'category': 'test_add', 'date': '2022-03-23', 'description': 'Testing add'})
+    assert db.select_all() == [
+        {'item #': 1, 'amount': 2, 'category': 'test1', 'date': '2022-03-21', 'desc': 'This is a test'},
+        {'item #': 2, 'amount': 2, 'category': 'test1', 'date': '2022-03-21', 'desc': 'This is test 1'},
+        {'item #': 3, 'amount': 3, 'category': 'test2', 'date': '2022-03-21', 'desc': 'This is a test 2'},
+        {'item #': 4, 'amount': 3, 'category': 'test2', 'date': '2022-03-22', 'desc': 'This is a test 3'},
+        {'item #': 5, 'amount': 4, 'category': 'test2', 'date': '2022-03-22', 'desc': 'This is a test 4'},
+        {'item #': 6, 'amount': 3, 'category': 'test_add', 'date': '2022-03-23', 'desc': 'Testing add'}
+    ]
+
+
+def test_summary_by_date(setup_and_teardown):
+    assert db.summary_by_date() == [
+        {'amount': 7, 'date': '2022-03-21'},
+        {'amount': 7, 'date': '2022-03-22'}
+    ]
