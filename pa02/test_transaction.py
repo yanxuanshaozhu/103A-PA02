@@ -147,4 +147,6 @@ def test_summary_by_date(setup_and_teardown):
 
 
 def test_summary_by_month(setup_and_teardown):
-    pass
+    assert db.summary_by_month() == [(1, '02'),
+                                     (3, '04'),
+                                     (14, '03')]
