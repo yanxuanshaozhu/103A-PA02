@@ -23,7 +23,7 @@ class Transaction:
     def select_all(self):
         conn = sqlite3.connect(self.db)
         cur = conn.cursor()
-        cur.execute("select * from transactions")
+        cur.execute("SELECT * from transactions")
         rows = cur.fetchall()
         conn.commit()
         conn.close()
@@ -53,3 +53,12 @@ class Transaction:
         con.commit()
         con.close()
         return last_rowid[0]
+    def summary_by_date(self):
+        con= sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        cur.execute("SELECT item, amount, category, date as n, description from transactions group by date order by n")
+        results=cur.fetchall()
+        con.commit()
+        con.close()
+        return results
+

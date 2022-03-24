@@ -83,12 +83,12 @@ def process_choice(choice):
         print_transactions(t)
     elif choice =='5':
         print ('adding transaction')
-        item=int(input('item #: ')
+        item=int(input('item #: '))
         amount=int(input('amount: '))
         category=input('category: ')
         date=input("date yyyymmdd:")
         desc=input('description: ')
-        t={'item':item,'amount':amount,'category'=category, 'date':date,'description':desc}
+        t={'item':item,'amount':amount,'category':category, 'date':date,'description':desc}
         transactions.add(t)
     elif choice =='6':
         print ('here are the current transactions: ')
@@ -97,9 +97,14 @@ def process_choice(choice):
         row=int(input('which transaction would you like to delete? '))
         transactions.delete(row)
     elif choice =='7':
+        print ("Summary of transactions by date:")
+        t=transactions.summary_by_date()
     elif choice =='8':
+        print ("Summary of transactions by month:")
     elif choice =='9':
+        print ("Summary of transactions by year:")
     elif choice =='10':
+        print ("Summary of transactions by category:")
     elif choice =='11':
         print (menu)
     else:
