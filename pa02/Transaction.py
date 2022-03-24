@@ -61,4 +61,13 @@ class Transaction:
         con.commit()
         con.close()
         return results
+    def summary_by_category(self):
+        con= sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        cur.execute("SELECT item, amount, category as n, date, description from transactions group by category order by n")
+        results=cur.fetchall()
+        con.commit()
+        con.close()
+        return results
+
 

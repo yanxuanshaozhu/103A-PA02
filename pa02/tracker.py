@@ -92,19 +92,22 @@ def process_choice(choice):
         transactions.add(t)
     elif choice =='6':
         print ('here are the current transactions: ')
-        t = transaction.select_all()
+        t = transactions.select_all()
         print_transactions(t)
         row=int(input('which transaction would you like to delete? '))
         transactions.delete(row)
     elif choice =='7':
         print ("Summary of transactions by date:")
         t=transactions.summary_by_date()
+        print_transactions(t)
     elif choice =='8':
         print ("Summary of transactions by month:")
     elif choice =='9':
         print ("Summary of transactions by year:")
     elif choice =='10':
         print ("Summary of transactions by category:")
+        t=transactions.summary_by_category()
+        print_transactions(t)
     elif choice =='11':
         print (menu)
     else:
