@@ -34,10 +34,8 @@ could be replaced with PostgreSQL or Pandas or straight python lists
 from transactions import Transaction
 from category import Category
 
-
 transactions = Transaction('tracker.db')
 category = Category('tracker.db')
-
 
 # here is the menu for the tracker app
 
@@ -57,99 +55,99 @@ menu = '''
 '''
 
 
-
-
 def process_choice(choice):
-
-    if choice=='0':
+    if choice == '0':
         return
-    elif choice=='1':
+    elif choice == '1':
         cats = category.select_all()
         print_categories(cats)
-    elif choice=='2':
+    elif choice == '2':
         name = input("category name: ")
         desc = input("category description: ")
-        cat = {'name':name, 'desc':desc}
+        cat = {'name': name, 'desc': desc}
         category.add(cat)
-    elif choice=='3':
+    elif choice == '3':
         print("modifying category")
         rowid = int(input("rowid: "))
         name = input("new category name: ")
         desc = input("new category description: ")
-        cat = {'name':name, 'desc':desc}
-        category.update(rowid,cat)
-    elif choice =='4':
+        cat = {'name': name, 'desc': desc}
+        category.update(rowid, cat)
+    elif choice == '4':
         t = transactions.select_all()
         print_transactions(t)
-    elif choice =='5':
-        print ('adding transaction')
-        item=int(input('item #: '))
-        amount=int(input('amount: '))
-        cat =input('category: ')
-        date=input("date yyyymmdd:")
-        desc=input('description: ')
-        t={'item':item,'amount':amount,'category':category, 'date':date,'description':desc}
+    elif choice == '5':
+        print('adding transaction')
+        item = int(input('item #: '))
+        amount = int(input('amount: '))
+        cat = input('category: ')
+        date = input("date yyyymmdd:")
+        desc = input('description: ')
+        t = {'item': item, 'amount': amount, 'category': category, 'date': date, 'description': desc}
         transactions.add(t)
-    elif choice =='6':
-        print ('here are the current transactions: ')
-        t = transaction.select_all()
+    elif choice == '6':
+        print('here are the current transactions: ')
+        t = transactions.select_all()
         print_transactions(t)
-        row=int(input('which transaction would you like to delete? '))
+        row = int(input('which transaction would you like to delete? '))
         transactions.delete(row)
-    elif choice =='7':
-        print ("Summary of transactions by date:")
-        t=transactions.summary_by_date()
+    elif choice == '7':
+        print("Summary of transactions by date:")
+        t = transactions.summary_by_date()
         print_transactions(t)
-    elif choice =='8':
-        print ("Summary of transactions by month:")
-    elif choice =='9':
-        print ("Summary of transactions by year:")
-    elif choice =='10':
-        print ("Summary of transactions by category:")
-        t=transactions.summary_by_category()
+    elif choice == '8':
+        print("Summary of transactions by month:")
+    elif choice == '9':
+        print("Summary of transactions by year:")
+    elif choice == '10':
+        print("Summary of transactions by category:")
+        t = transactions.summary_by_category()
         print_transactions(t)
-    elif choice =='11':
-        print (menu)
+    elif choice == '11':
+        print(menu)
     else:
-        print("choice",choice,"not yet implemented")
+        print("choice", choice, "not yet implemented")
 
     choice = input("> ")
-    return(choice)
+    return choice
 
 
 def toplevel():
-    ''' handle the user's choice '''
+    """ handle the user's choice """
 
     ''' read the command args and process them'''
     print(menu)
     choice = input("> ")
-    while choice !='0' :
+    while choice != '0':
         choice = process_choice(choice)
     print('bye')
+
 
 #
 # here are some helper functions
 #
 
 def print_transactions(items):
-    ''' print the transactions '''
-    if len(items)==0:
+    """ print the transactions """
+    if len(items) == 0:
         print('no items to print')
         return
     print('\n')
-    print("%-10s %-10d %-10s %-10d %-30s"%(
-        'item #','amount','category','date','description'))
-    print('-'*40)
+    print("%-10s %-10d %-10s %-10d %-30s" % (
+        'item #', 'amount', 'category', 'date', 'description'))
+    print('-' * 40)
     for item in items:
         values = tuple(item.values())
-        print("%-10s %-10d %-10s %-10d %-30s"%values)
+        print("%-10s %-10d %-10s %-10d %-30s" % values)
+
 
 def print_category(cat):
-    print("%-3d %-10s %-30s"%(cat['rowid'],cat['name'],cat['desc']))
+    print("%-3d %-10s %-30s" % (cat['rowid'], cat['name'], cat['desc']))
+
 
 def print_categories(cats):
-    print("%-3s %-10s %-30s"%("id","name","description"))
-    print('-'*45)
+    print("%-3s %-10s %-30s" % ("id", "name", "description"))
+    print('-' * 45)
     for cat in cats:
         print_category(cat)
 
