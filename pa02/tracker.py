@@ -97,13 +97,18 @@ def process_choice(choice):
         print_transactions(t)
     elif choice == '8':
         print("Summary of transactions by month:")
+        t = transactions.summary_by_month()
+        print_transactions(t)
     elif choice == '9':
         print("Summary of transactions by year:")
+        t = transactions.summary_by_year()
+        print_transactions(t)
     elif choice == '10':
         print("Summary of transactions by category:")
         t = transactions.summary_by_category()
         print_transactions(t)
     elif choice == '11':
+        print("Here is the menu:")
         print(menu)
     else:
         print("choice", choice, "not yet implemented")
