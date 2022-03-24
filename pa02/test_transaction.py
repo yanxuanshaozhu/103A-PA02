@@ -11,23 +11,30 @@ def setup_and_teardown(tmpdir):
     con = sqlite3.connect(tmpdir.join('test.db'))
     cur = con.cursor()
     cur.execute(
-        "CREATE TABLE IF NOT EXISTS transactions (item int, amount int, category text, date text, description text)")
-    cur.execute("INSERT into transactions (item, amount, category, date, description) values "
-                "(1, 2, 'test1', '2022-03-21', 'This is a test')")
-    cur.execute("INSERT into transactions (item, amount, category, date, description) values "
-                "(2, 2, 'test1', '2022-03-21', 'This is test 1')")
-    cur.execute("INSERT into transactions (item, amount, category, date, description) values "
-                "(3, 3, 'test2', '2022-03-21', 'This is a test 2')")
-    cur.execute("INSERT into transactions (item, amount, category, date, description) values "
-                "(4, 3, 'test2', '2022-03-22', 'This is a test 3')")
-    cur.execute("INSERT into transactions (item, amount, category, date, description) values "
-                "(5, 4, 'test2', '2022-03-22', 'This is a test 4')")
-    cur.execute("INSERT into transactions (item, amount, category, date, description) values "
-                "(6, 2, 'test2', '2022-04-24', 'This is a test 5')")
-    cur.execute("INSERT into transactions (item, amount, category, date, description) values "
-                "(7, 1, 'test2', '2022-04-25', 'This is a test 6')")
-    cur.execute("INSERT into transactions (item, amount, category, date, description) values "
-                "(8, 1, 'test2', '2023-02-22', 'This is a test 7')")
+        """CREATE TABLE IF NOT EXISTS transactions
+          (
+             item        int,
+             amount      int,
+             category    text,
+             date        text,
+             description text
+          ) """)
+    cur.execute("INSERT into transactions (item, amount, category, date, description)"
+                "values (1, 2, 'test1', '2022-03-21', 'This is a test')")
+    cur.execute("INSERT into transactions (item, amount, category, date, description)"
+                "values (2, 2, 'test1', '2022-03-21', 'This is test 1')")
+    cur.execute("INSERT into transactions (item, amount, category, date, description)"
+                "values (3, 3, 'test2', '2022-03-21', 'This is a test 2')")
+    cur.execute("INSERT into transactions (item, amount, category, date, description)"
+                "values (4, 3, 'test2', '2022-03-22', 'This is a test 3')")
+    cur.execute("INSERT into transactions (item, amount, category, date, description)"
+                "values (5, 4, 'test2', '2022-03-22', 'This is a test 4')")
+    cur.execute("INSERT into transactions (item, amount, category, date, description)"
+                "values (6, 2, 'test2', '2022-04-24', 'This is a test 5')")
+    cur.execute("INSERT into transactions (item, amount, category, date, description)"
+                "values (7, 1, 'test2', '2022-04-25', 'This is a test 6')")
+    cur.execute("INSERT into transactions (item, amount, category, date, description)"
+                "values (8, 1, 'test2', '2023-02-22', 'This is a test 7')")
 
     con.commit()
     con.close()
@@ -55,27 +62,42 @@ def test_init(setup_test_init):
 
 def test_select_all(setup_and_teardown):
     assert setup_and_teardown.select_all() == [
-        {'rowid': 1, 'item': 1, 'amount': 2, 'category': 'test1', 'date': '2022-03-21', 'desc': 'This is a test'},
-        {'rowid': 2, 'item': 2, 'amount': 2, 'category': 'test1', 'date': '2022-03-21', 'desc': 'This is test 1'},
-        {'rowid': 3, 'item': 3, 'amount': 3, 'category': 'test2', 'date': '2022-03-21', 'desc': 'This is a test 2'},
-        {'rowid': 4, 'item': 4, 'amount': 3, 'category': 'test2', 'date': '2022-03-22', 'desc': 'This is a test 3'},
-        {'rowid': 5, 'item': 5, 'amount': 4, 'category': 'test2', 'date': '2022-03-22', 'desc': 'This is a test 4'},
-        {'rowid': 6, 'item': 6, 'amount': 2, 'category': 'test2', 'date': '2022-04-24', 'desc': 'This is a test 5'},
-        {'rowid': 7, 'item': 7, 'amount': 1, 'category': 'test2', 'date': '2022-04-25', 'desc': 'This is a test 6'},
-        {'rowid': 8, 'item': 8, 'amount': 1, 'category': 'test2', 'date': '2023-02-22', 'desc': 'This is a test 7'}
+        {'rowid': 1, 'item': 1, 'amount': 2, 'category': 'test1',
+         'date': '2022-03-21', 'desc': 'This is a test'},
+        {'rowid': 2, 'item': 2, 'amount': 2, 'category': 'test1',
+         'date': '2022-03-21', 'desc': 'This is test 1'},
+        {'rowid': 3, 'item': 3, 'amount': 3, 'category': 'test2',
+         'date': '2022-03-21', 'desc': 'This is a test 2'},
+        {'rowid': 4, 'item': 4, 'amount': 3, 'category': 'test2',
+         'date': '2022-03-22', 'desc': 'This is a test 3'},
+        {'rowid': 5, 'item': 5, 'amount': 4, 'category': 'test2',
+         'date': '2022-03-22', 'desc': 'This is a test 4'},
+        {'rowid': 6, 'item': 6, 'amount': 2, 'category': 'test2',
+         'date': '2022-04-24', 'desc': 'This is a test 5'},
+        {'rowid': 7, 'item': 7, 'amount': 1, 'category': 'test2',
+         'date': '2022-04-25', 'desc': 'This is a test 6'},
+        {'rowid': 8, 'item': 8, 'amount': 1, 'category': 'test2',
+         'date': '2023-02-22', 'desc': 'This is a test 7'}
     ]
 
 
 def test_delete(setup_and_teardown):
     setup_and_teardown.delete(3)
     assert setup_and_teardown.select_all() == [
-        {'rowid': 1, 'item': 1, 'amount': 2, 'category': 'test1', 'date': '2022-03-21', 'desc': 'This is a test'},
-        {'rowid': 2, 'item': 2, 'amount': 2, 'category': 'test1', 'date': '2022-03-21', 'desc': 'This is test 1'},
-        {'rowid': 4, 'item': 4, 'amount': 3, 'category': 'test2', 'date': '2022-03-22', 'desc': 'This is a test 3'},
-        {'rowid': 5, 'item': 5, 'amount': 4, 'category': 'test2', 'date': '2022-03-22', 'desc': 'This is a test 4'},
-        {'rowid': 6, 'item': 6, 'amount': 2, 'category': 'test2', 'date': '2022-04-24', 'desc': 'This is a test 5'},
-        {'rowid': 7, 'item': 7, 'amount': 1, 'category': 'test2', 'date': '2022-04-25', 'desc': 'This is a test 6'},
-        {'rowid': 8, 'item': 8, 'amount': 1, 'category': 'test2', 'date': '2023-02-22', 'desc': 'This is a test 7'},
+        {'rowid': 1, 'item': 1, 'amount': 2, 'category': 'test1',
+         'date': '2022-03-21', 'desc': 'This is a test'},
+        {'rowid': 2, 'item': 2, 'amount': 2, 'category': 'test1',
+         'date': '2022-03-21', 'desc': 'This is test 1'},
+        {'rowid': 4, 'item': 4, 'amount': 3, 'category': 'test2',
+         'date': '2022-03-22', 'desc': 'This is a test 3'},
+        {'rowid': 5, 'item': 5, 'amount': 4, 'category': 'test2',
+         'date': '2022-03-22', 'desc': 'This is a test 4'},
+        {'rowid': 6, 'item': 6, 'amount': 2, 'category': 'test2',
+         'date': '2022-04-24', 'desc': 'This is a test 5'},
+        {'rowid': 7, 'item': 7, 'amount': 1, 'category': 'test2',
+         'date': '2022-04-25', 'desc': 'This is a test 6'},
+        {'rowid': 8, 'item': 8, 'amount': 1, 'category': 'test2',
+         'date': '2023-02-22', 'desc': 'This is a test 7'},
     ]
     setup_and_teardown.delete(1)
     setup_and_teardown.delete(2)
@@ -88,18 +110,27 @@ def test_delete(setup_and_teardown):
 
 
 def test_add(setup_and_teardown):
-    setup_and_teardown.add(
-        {'item': 20, 'amount': 3, 'category': 'test_add', 'date': '2022-03-23', 'description': 'Testing add'})
+    setup_and_teardown.add({'item': 20, 'amount': 3, 'category': 'test_add',
+            'date': '2022-03-23', 'description': 'Testing add'})
     assert setup_and_teardown.select_all() == [
-        {'rowid': 1, 'item': 1, 'amount': 2, 'category': 'test1', 'date': '2022-03-21', 'desc': 'This is a test'},
-        {'rowid': 2, 'item': 2, 'amount': 2, 'category': 'test1', 'date': '2022-03-21', 'desc': 'This is test 1'},
-        {'rowid': 3, 'item': 3, 'amount': 3, 'category': 'test2', 'date': '2022-03-21', 'desc': 'This is a test 2'},
-        {'rowid': 4, 'item': 4, 'amount': 3, 'category': 'test2', 'date': '2022-03-22', 'desc': 'This is a test 3'},
-        {'rowid': 5, 'item': 5, 'amount': 4, 'category': 'test2', 'date': '2022-03-22', 'desc': 'This is a test 4'},
-        {'rowid': 6, 'item': 6, 'amount': 2, 'category': 'test2', 'date': '2022-04-24', 'desc': 'This is a test 5'},
-        {'rowid': 7, 'item': 7, 'amount': 1, 'category': 'test2', 'date': '2022-04-25', 'desc': 'This is a test 6'},
-        {'rowid': 8, 'item': 8, 'amount': 1, 'category': 'test2', 'date': '2023-02-22', 'desc': 'This is a test 7'},
-        {'rowid': 9, 'item': 20, 'amount': 3, 'category': 'test_add', 'date': '2022-03-23', 'desc': 'Testing add'}
+        {'rowid': 1, 'item': 1, 'amount': 2, 'category': 'test1',
+         'date': '2022-03-21', 'desc': 'This is a test'},
+        {'rowid': 2, 'item': 2, 'amount': 2, 'category': 'test1',
+         'date': '2022-03-21', 'desc': 'This is test 1'},
+        {'rowid': 3, 'item': 3, 'amount': 3, 'category': 'test2',
+         'date': '2022-03-21', 'desc': 'This is a test 2'},
+        {'rowid': 4, 'item': 4, 'amount': 3, 'category': 'test2',
+         'date': '2022-03-22', 'desc': 'This is a test 3'},
+        {'rowid': 5, 'item': 5, 'amount': 4, 'category': 'test2',
+         'date': '2022-03-22', 'desc': 'This is a test 4'},
+        {'rowid': 6, 'item': 6, 'amount': 2, 'category': 'test2',
+         'date': '2022-04-24', 'desc': 'This is a test 5'},
+        {'rowid': 7, 'item': 7, 'amount': 1, 'category': 'test2',
+         'date': '2022-04-25', 'desc': 'This is a test 6'},
+        {'rowid': 8, 'item': 8, 'amount': 1, 'category': 'test2',
+         'date': '2023-02-22', 'desc': 'This is a test 7'},
+        {'rowid': 9, 'item': 20, 'amount': 3, 'category': 'test_add',
+         'date': '2022-03-23', 'desc': 'Testing add'}
     ]
 
 
@@ -117,6 +148,9 @@ def test_add1(setup_and_teardown):
     rowid = setup_and_teardown.add(tran0)
     trans1 = setup_and_teardown.select_all()
     assert len(trans1) == len(trans0) + 1
+
+  
+
 
 
 @pytest.mark.delete1

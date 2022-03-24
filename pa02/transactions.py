@@ -1,18 +1,11 @@
 import sqlite3
 
-
 def data_to_dict(data):
- 
     return {'rowid': int(data[0]), 'item': int(data[1]), 'amount': int(data[2]), 'category': data[3], 'date': data[4],
             'desc': data[5]}
-
-
 def data_to_list(data):
     return [data_to_dict(row) for row in data]
-
-
 class Transaction:
-
     def __init__(self, filename):
         con = sqlite3.connect(filename)
         cur = con.cursor()
@@ -31,9 +24,7 @@ class Transaction:
     def select_all(self):
         conn = sqlite3.connect(self.db)
         cur = conn.cursor()
-        cur.execute("""SELECT rowid, 
-                              * 
-                       FROM transactions;""")
+        cur.execute("""SELECT rowid, * FROM transactions;""")
         rows = cur.fetchall()
         conn.commit()
         conn.close()
@@ -42,9 +33,7 @@ class Transaction:
     def select_one(self, rowid):
         conn = sqlite3.connect(self.db)
         cur = conn.cursor()
-        cur.execute("""SELECT rowid, 
-                              * 
-                       FROM transactions where rowid = (?);""", (rowid,))
+        cur.execute("""SELECT rowid, * FROM transactions where rowid = (?);""", (rowid,))
         rows = cur.fetchall()
         conn.commit()
         conn.close()
