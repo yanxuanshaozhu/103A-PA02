@@ -1,5 +1,5 @@
 #! /opt/miniconda3/bin/python3
-'''
+"""
 tracker is an app that maintains a list of personal
 financial transactions.
 
@@ -29,11 +29,11 @@ This app will store the data in a SQLite database ~/tracker.db
 Note the actual implementation of the ORM is hidden and so it
 could be replaced with PostgreSQL or Pandas or straight python lists
 
-'''
+"""
 
 from transactions import Transaction
 from category import Category
-import sys
+
 
 transactions = Transaction('tracker.db')
 category = Category('tracker.db')
@@ -83,12 +83,12 @@ def process_choice(choice):
         print_transactions(t)
     elif choice =='5':
         print ('adding transaction')
-        item=int(input('item #: ')
+        item=int(input('item #: '))
         amount=int(input('amount: '))
-        category=input('category: ')
+        cat =input('category: ')
         date=input("date yyyymmdd:")
         desc=input('description: ')
-        t={'item':item,'amount':amount,'category'=category, 'date':date,'description':desc}
+        t={'item':item,'amount':amount,'category':cat, 'date':date,'description':desc}
         transactions.add(t)
     elif choice =='6':
         print ('here are the current transactions: ')
@@ -97,9 +97,13 @@ def process_choice(choice):
         row=int(input('which transaction would you like to delete? '))
         transactions.delete(row)
     elif choice =='7':
+        pass
     elif choice =='8':
+        pass
     elif choice =='9':
+        pass
     elif choice =='10':
+        pass
     elif choice =='11':
         print (menu)
     else:

@@ -28,3 +28,13 @@ class Transaction:
         conn.commit()
         conn.close()
         return data_to_list(rows)
+
+    def select_one(self, item):
+        """ return a category with a specified rowid """
+        con = sqlite3.connect(self.db)
+        cur = con.cursor()
+        cur.execute("SELECT * from transactions where item=(?)", item)
+        tuples = cur.fetchall()
+        con.commit()
+        con.close()
+        return data_to_list(tuples[0])
