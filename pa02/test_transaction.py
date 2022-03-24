@@ -232,8 +232,9 @@ def test_summary_by_month(setup_and_teardown):
     Test summary_by_month() method.
     :param setup_and_teardown: pytest fixture, takes care of creating and removing database files
     """
-    assert setup_and_teardown.summary_by_month() == [{'total': 1, 'year': '2023'},
-                                                     {'total': 17, 'year': '2022'}]
+    assert setup_and_teardown.summary_by_month() == [{'month': '02', 'total': 1},
+                                                     {'month': '04', 'total': 3},
+                                                     {'month': '03', 'total': 14}]
 
 
 def test_summary_by_year(setup_and_teardown):
