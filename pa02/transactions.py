@@ -2,7 +2,8 @@ import sqlite3
 
 
 def data_to_dict(data):
-    return {'rowid': data[0], 'item': data[1], 'amount': data[2], 'category': data[3], 'date': data[4],
+ 
+    return {'rowid': int(data[0]), 'item': int(data[1]), 'amount': int(data[2]), 'category': data[3], 'date': data[4],
             'desc': data[5]}
 
 
