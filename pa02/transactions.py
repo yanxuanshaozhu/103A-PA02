@@ -23,19 +23,36 @@ def data_to_list(data):
     return [data_to_dict(row) for row in data]
 
 
+def summarize_by_date_formatter(data):
+    return [{'total': row[0], 'date': row[1]} for row in data]
+
+
+def summarize_by_month_formatter(data):
+    return [{'total': row[0], 'month': row[1]} for row in data]
+
+
+def summarize_by_year_formatter(data):
+    return [{'total': row[0], 'year': row[1]} for row in data]
+
+
+def summarize_by_category_formatter(data):
+    return [{'total': row[0], 'category': row[1]} for row in data]
+
+
 class Transaction:
     """Transaction represents a table of transactions"""
+
     def __init__(self, filename):
         con = sqlite3.connect(filename)
         cur = con.cursor()
         cur.execute(
             """
             CREATE TABLE IF NOT EXISTS transactions (
-                    item int, 
-                    amount int, 
-                    category text, 
-                    date text, 
-                    description text);
+                    item INT, 
+                    amount INT, 
+                    category TEXT, 
+                    date TEXT, 
+                    description TEXT);
             """)
         con.commit()
         con.close()
@@ -90,7 +107,6 @@ class Transaction:
         return last_rowid[0]
 
     def summary_by_date(self):
-        """return a list of """
         con = sqlite3.connect(self.db)
         cur = con.cursor()
         cur.execute("""
@@ -103,7 +119,7 @@ class Transaction:
         results = cur.fetchall()
         con.commit()
         con.close()
-        return results
+        return summarize_by_date_formatter(results)
 
     def summary_by_month(self):
         con = sqlite3.connect(self.db)
@@ -118,7 +134,7 @@ class Transaction:
         results = cur.fetchall()
         con.commit()
         con.close()
-        return results
+        return summarize_by_month_formatter(results)
 
     def summary_by_year(self):
         con = sqlite3.connect(self.db)
@@ -133,7 +149,7 @@ class Transaction:
         results = cur.fetchall()
         con.commit()
         con.close()
-        return results
+        return summarize_by_year_formatter(results)
 
     def summary_by_category(self):
         con = sqlite3.connect(self.db)
@@ -148,4 +164,4 @@ class Transaction:
         results = cur.fetchall()
         con.commit()
         con.close()
-        return results
+        return summarize_by_category_formatter(results)
