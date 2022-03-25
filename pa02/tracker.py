@@ -137,12 +137,12 @@ def print_transactions(items):
         print('no items to print')
         return
     print('\n')
-    print(f"{'rowid':<10} {'item':<10} {'amount':<10} {'category':<10} {'date':<10} {'description':<30}")
+    print(f"{'rowid':<10} {'item':<10} {'amount':<10} "
+          f"{'category':<10} {'date':<10} {'description':<30}")
     print('-' * 68)
     for item in items:
-        values = tuple(item.values())
-        print("%-10d %-10d %-10d %-10s %-10s %-30s"
-              % (item['rowid'], item['item'], item['amount'], item['category'], item['date'], item['desc']))
+        print(f"{item['rowid']:<10} {item['item']:<10} {item['amount']:<10}"
+              f"{item['category']:<10}, {item['date']:<10} {item['desc']:<30}")
 
 
 def print_transaction_summary(items, criteria):
