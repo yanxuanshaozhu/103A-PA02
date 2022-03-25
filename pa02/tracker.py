@@ -142,7 +142,7 @@ def print_transactions(items):
     print('-' * 68)
     for item in items:
         print(f"{item['rowid']:<10} {item['item']:<10} {item['amount']:<10}"
-              f"{item['category']:<10}, {item['date']:<10} {item['desc']:<30}")
+              f"{item['category']:<10} {item['date']:<10} {item['desc']:<30}")
 
 
 def print_transaction_summary(items, criteria):
