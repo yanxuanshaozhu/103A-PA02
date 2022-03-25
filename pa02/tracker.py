@@ -82,7 +82,7 @@ def process_choice(choice):
         item = int(input('item #: '))
         amount = int(input('amount: '))
         cat = input('category: ')
-        date = input("date yyyymmdd:")
+        date = input("date yyyy-mm-dd:")
         desc = input('description: ')
         trans = {'item': item, 'amount': amount, 'category': cat, 'date': date, 'description': desc}
         transactions.add(trans)
@@ -95,19 +95,19 @@ def process_choice(choice):
     elif choice == '7':
         print("Summary of transactions by date:")
         res = transactions.summary_by_date()
-        print_transactions(res)
+        print_transaction_summary(res, 'date')
     elif choice == '8':
         print("Summary of transactions by month:")
         res = transactions.summary_by_month()
-        print_transactions(res)
+        print_transaction_summary(res, 'month')
     elif choice == '9':
         print("Summary of transactions by year:")
         res = transactions.summary_by_year()
-        print_transactions(res)
+        print_transaction_summary(res, 'year')
     elif choice == '10':
         print("Summary of transactions by category:")
         res = transactions.summary_by_category()
-        print_transactions(res)
+        print_transaction_summary(res, 'category')
     elif choice == '11':
         print("Here is the menu:")
         print(MENU)
@@ -137,12 +137,24 @@ def print_transactions(items):
         print('no items to print')
         return
     print('\n')
-
     print(f"{'rowid':<10} {'item':<10} {'amount':<10} {'category':<10} {'date':<10} {'description':<30}")
     print('-' * 68)
     for item in items:
         values = tuple(item.values())
-        print("%-10d %-10d %-10d %-10s %-10s %-30s" % values)
+        print("%-10d %-10d %-10d %-10s %-10s %-30s"
+              % (item['rowid'], item['item'], item['amount'], item['category'], item['date'], item['desc']))
+
+
+def print_transaction_summary(items, criteria):
+    """ print the transaction summarized by criteria """
+    if len(items) == 0:
+        print('no items to print')
+        return
+    print('\n')
+    print(f"{'total':<10} {criteria:<10}")
+    print('-' * 20)
+    for item in items:
+        print(f"{item['total']:<10} {item[criteria]:<10}")
 
 
 def print_category(cat):

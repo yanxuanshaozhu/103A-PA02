@@ -25,22 +25,22 @@ def data_to_list(data):
 
 def summarize_by_date_formatter(data):
     """ this method converts data from a list of tuples to a list of dictionaries"""
-    return [{'total': row[0], 'date': row[1]} for row in data]
+    return [{'total': int(row[0]), 'date': row[1]} for row in data]
 
 
 def summarize_by_month_formatter(data):
     """ this method converts data from a list of tuples to a list of dictionaries"""
-    return [{'total': row[0], 'month': row[1]} for row in data]
+    return [{'total': int(row[0]), 'month': row[1]} for row in data]
 
 
 def summarize_by_year_formatter(data):
     """ this method converts data from a list of tuples to a list of dictionaries"""
-    return [{'total': row[0], 'year': row[1]} for row in data]
+    return [{'total': int(row[0]), 'year': row[1]} for row in data]
 
 
 def summarize_by_category_formatter(data):
     """ this method converts data from a list of tuples to a list of dictionaries"""
-    return [{'total': row[0], 'category': row[1]} for row in data]
+    return [{'total': int(row[0]), 'category': row[1]} for row in data]
 
 
 class Transaction:
