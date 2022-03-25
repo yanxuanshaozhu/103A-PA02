@@ -52,10 +52,10 @@ class Transaction:
         cur.execute(
             """
             CREATE TABLE IF NOT EXISTS transactions (
-                    item INT, 
-                    amount INT, 
-                    category TEXT, 
-                    date TEXT, 
+                    item INT,
+                    amount INT,
+                    category TEXT,
+                    date TEXT,
                     description TEXT);
             """)
         con.commit()
